@@ -4,6 +4,7 @@ import random
 import numpy as np
 from mmcv.utils import print_log
 from mmdet.datasets import DATASETS, CocoDataset
+from terminaltables import AsciiTable
 
 from mmtrack.core import eval_mot
 from mmtrack.utils import get_root_logger
@@ -128,8 +129,8 @@ class CocoVideoDataset(CocoDataset):
                 returned, otherwise, not returned. Default: True.
 
         Returns:
-            list(dict): `img_info` and the reference images informations or
-            only the reference images informations.
+            list(dict): `img_info` and the reference images information or
+            only the reference images information.
         """
         assert isinstance(img_info, dict)
         if isinstance(frame_range, int):
@@ -402,15 +403,15 @@ class CocoVideoDataset(CocoDataset):
 
         eval_results = dict()
         if 'track' in metrics:
-            assert len(self.data_infos) == len(results['track_results'])
+            assert len(self.data_infos) == len(results['track_bboxes'])
             inds = [
                 i for i, _ in enumerate(self.data_infos) if _['frame_id'] == 0
             ]
             num_vids = len(inds)
             inds.append(len(self.data_infos))
 
-            track_results = [
-                results['track_results'][inds[i]:inds[i + 1]]
+            track_bboxes = [
+                results['track_bboxes'][inds[i]:inds[i + 1]]
                 for i in range(num_vids)
             ]
             ann_infos = [self.get_ann_info(_) for _ in self.data_infos]
@@ -418,7 +419,7 @@ class CocoVideoDataset(CocoDataset):
                 ann_infos[inds[i]:inds[i + 1]] for i in range(num_vids)
             ]
             track_eval_results = eval_mot(
-                results=track_results,
+                results=track_bboxes,
                 annotations=ann_infos,
                 logger=logger,
                 classes=self.CLASSES,
@@ -432,11 +433,11 @@ class CocoVideoDataset(CocoDataset):
             if isinstance(results, dict):
                 if 'bbox' in super_metrics and 'segm' in super_metrics:
                     super_results = []
-                    for bbox, segm in zip(results['bbox_results'],
-                                          results['segm_results']):
-                        super_results.append((bbox, segm))
+                    for bbox, mask in zip(results['det_bboxes'],
+                                          results['det_masks']):
+                        super_results.append((bbox, mask))
                 else:
-                    super_results = results['bbox_results']
+                    super_results = results['det_bboxes']
             elif isinstance(results, list):
                 super_results = results
             else:
@@ -449,3 +450,47 @@ class CocoVideoDataset(CocoDataset):
             eval_results.update(super_eval_results)
 
         return eval_results
+
+    def __repr__(self):
+        """Print the number of instance number suit for video dataset."""
+        dataset_type = 'Test' if self.test_mode else 'Train'
+        result = (f'\n{self.__class__.__name__} {dataset_type} dataset '
+                  f'with number of images {len(self)}, '
+                  f'and instance counts: \n')
+        if self.CLASSES is None:
+            result += 'Category names are not provided. \n'
+            return result
+        instance_count = np.zeros(len(self.CLASSES) + 1).astype(int)
+        # count the instance number in each image
+        for idx in range(len(self)):
+            img_info = self.data_infos[idx]
+            label = self.get_ann_info(img_info)['labels']
+            unique, counts = np.unique(label, return_counts=True)
+            if len(unique) > 0:
+                # add the occurrence number to each class
+                instance_count[unique] += counts
+            else:
+                # background is the last index
+                instance_count[-1] += 1
+        # create a table with category count
+        table_data = [['category', 'count'] * 5]
+        row_data = []
+        for cls, count in enumerate(instance_count):
+            if cls < len(self.CLASSES):
+                row_data += [f'{cls} [{self.CLASSES[cls]}]', f'{count}']
+            else:
+                # add the background number
+                row_data += ['-1 background', f'{count}']
+            if len(row_data) == 10:
+                table_data.append(row_data)
+                row_data = []
+        if len(row_data) >= 2:
+            if row_data[-1] == '0':
+                row_data = row_data[:-2]
+            if len(row_data) >= 2:
+                table_data.append([])
+                table_data.append(row_data)
+
+        table = AsciiTable(table_data)
+        result += table.table
+        return result
