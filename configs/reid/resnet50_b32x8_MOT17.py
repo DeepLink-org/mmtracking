@@ -27,7 +27,7 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmclassification/v0/resnet/resnet50_batch256_imagenet_20200708-cfb998bf.pth'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/resnet50_batch256_imagenet_20200708-cfb998bf.pth'  # noqa: E501
         )))
 # optimizer
 optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)

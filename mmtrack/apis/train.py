@@ -168,6 +168,9 @@ def train_model(model,
             hook = build_from_cfg(hook_cfg, HOOKS)
             runner.register_hook(hook, priority=priority)
 
+    for hook in getattr(torch, '_algolib_hooks', []):
+        runner.register_hook(hook, priority='HIGHEST')
+
     if cfg.resume_from:
         runner.resume(cfg.resume_from)
     elif cfg.load_from:

@@ -37,7 +37,7 @@ test_pipeline = [
         ])
 ]
 dataset_type = 'YouTubeVISDataset'
-data_root = 'data/youtube_vis_2019/'
+data_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/youtube_vis_2019/'
 dataset_version = data_root[-5:-1]
 data = dict(
     samples_per_gpu=1,

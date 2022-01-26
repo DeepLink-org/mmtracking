@@ -4,4 +4,4 @@ model = dict(
         backbone=dict(
             depth=101,
             init_cfg=dict(
-                type='Pretrained', checkpoint='torchvision://resnet101'))))
+                type='Pretrained', checkpoint='/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/resnet101-63fe2227.pth'))))

@@ -115,9 +115,15 @@ ckpts
 *.pkl.json
 *.log.json
 work_dirs/
+workdir/
 mmtrack/.mim
 
 # Pytorch
 *.pth
 *.py~
 *.sh~
+
+# user
+algolib_gen/
+workdir/
+algolib/configs
