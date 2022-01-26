@@ -12,7 +12,7 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmtracking/mot/faster_rcnn/faster-rcnn_r50_fpn_4e_mot17-half-64ee2ed4.pth'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/faster-rcnn_r50_fpn_4e_mot17-half-64ee2ed4.pth'  # noqa: E501
         )),
     reid=dict(
         type='BaseReID',
@@ -38,7 +38,7 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmtracking/mot/reid/reid_r50_6e_mot17-4bf6b63d.pth'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/reid_r50_6e_mot17-4bf6b63d.pth'  # noqa: E501
         )),
     motion=dict(
         type='CameraMotionCompensation',

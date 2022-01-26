@@ -11,7 +11,7 @@ model = dict(
             norm_eval=True,
             style='pytorch',
             init_cfg=dict(
-                type='Pretrained', checkpoint='torchvision://resnet50')),
+                type='Pretrained', checkpoint='/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/resnet50-0676ba61.pth')),
         neck=dict(
             type='FPN',
             in_channels=[256, 512, 1024, 2048],

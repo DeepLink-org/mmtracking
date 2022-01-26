@@ -26,7 +26,7 @@ test_pipeline = [
     dict(type='ImageToTensor', keys=['img']),
     dict(type='Collect', keys=['img'], meta_keys=[])
 ]
-data_root = 'data/MOT17/'
+data_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/MOT17/'
 data = dict(
     samples_per_gpu=1,
     workers_per_gpu=2,

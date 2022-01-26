@@ -16,7 +16,7 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmdetection/v2.0/yolox/yolox_x_8x8_300e_coco/yolox_x_8x8_300e_coco_20211126_140254-1ef88d67.pth'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/yolox_x_8x8_300e_coco_20211126_140254-1ef88d67.pth'  # noqa: E501
         )),
     motion=dict(type='KalmanFilter'),
     tracker=dict(
@@ -74,6 +74,8 @@ test_pipeline = [
             dict(type='VideoCollect', keys=['img'])
         ])
 ]
+
+data_root2 = '/mnt/lustre/share_data/PAT/datasets/mmtrack/'
 data = dict(
     samples_per_gpu=samples_per_gpu,
     workers_per_gpu=4,
@@ -84,13 +86,13 @@ data = dict(
         dataset=dict(
             type='CocoDataset',
             ann_file=[
-                'data/MOT17/annotations/half-train_cocoformat.json',
-                'data/crowdhuman/annotations/crowdhuman_train.json',
-                'data/crowdhuman/annotations/crowdhuman_val.json'
+                data_root2 + 'MOT17/annotations/half-train_cocoformat.json',
+                data_root2 + 'crowdhuman/annotations/crowdhuman_train.json',
+                data_root2 + 'crowdhuman/annotations/crowdhuman_val.json'
             ],
             img_prefix=[
-                'data/MOT17/train', 'data/crowdhuman/train',
-                'data/crowdhuman/val'
+                data_root2 + 'MOT17/train', data_root2 + 'crowdhuman/train',
+                data_root2 + 'crowdhuman/val'
             ],
             classes=('pedestrian', ),
             pipeline=[

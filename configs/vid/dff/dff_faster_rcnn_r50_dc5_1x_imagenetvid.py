@@ -15,7 +15,7 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmtracking/pretrained_weights/flownet_simple.pth'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/flownet_simple.pth'  # noqa: E501
         )),
     train_cfg=None,
     test_cfg=dict(key_frame_interval=10))

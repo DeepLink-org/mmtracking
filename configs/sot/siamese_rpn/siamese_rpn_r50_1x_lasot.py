@@ -20,7 +20,7 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmtracking/pretrained_weights/sot_resnet50.model'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/sot_resnet50.model'  # noqa: E501
         )),
     neck=dict(
         type='ChannelMapper',
@@ -68,7 +68,7 @@ model = dict(
         center_size=7,
         rpn=dict(penalty_k=0.05, window_influence=0.42, lr=0.38)))
 
-data_root = 'data/'
+data_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/'
 train_pipeline = [
     dict(type='LoadMultiImagesFromFile', to_float32=True),
     dict(type='SeqLoadAnnotations', with_bbox=True),
