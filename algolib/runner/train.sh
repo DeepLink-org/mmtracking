@@ -107,13 +107,13 @@ case $MODEL_NAME in
     "faster-rcnn_r50_fpn_4e_mot17-half")
         FULL_MODEL="det/faster-rcnn_r50_fpn_4e_mot17-half"
         ;;
+    "siamese_rpn_r50_1x_lasot")
+        FULL_MODEL="sot/siamese_rpn/siamese_rpn_r50_1x_lasot"
+        ;;
     # "resnet50_b32x8_MOT17")
     #     FULL_MODEL="reid/resnet50_b32x8_MOT17"
     #     ;;
     # 注：该模型存在问题，详见：https://jira.sensetime.com/browse/PARROTSXQ-8232
-    "siamese_rpn_r50_1x_lasot")
-        FULL_MODEL="sot/siamese_rpn/siamese_rpn_r50_1x_lasot"
-        ;;
     # "masktrack_rcnn_r50_fpn_12e_youtubevis2019")
     #     FULL_MODEL="vis/masktrack_rcnn/masktrack_rcnn_r50_fpn_12e_youtubevis2019"
     #     ;;
