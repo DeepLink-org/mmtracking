@@ -87,10 +87,11 @@ export PYTHONPATH=$init_path/common/sites/:$PYTHONPATH # necessary for init
 partition=$1 
 name=$3
 MODEL_NAME=$3
+cprofile=$4
 g=$(($2<8?$2:8))
 array=( $@ )
 len=${#array[@]}
-EXTRA_ARGS=${array[@]:3:$len}
+EXTRA_ARGS=${array[@]:4:$len}
 SRUN_ARGS=${SRUN_ARGS:-""}
  
 # 5. model choice
@@ -135,10 +136,12 @@ set -x
 file_model=${FULL_MODEL##*/}
 folder_model=${FULL_MODEL%/*}
 
+[[ "$cprofile" == "True" ]] && commond_optional="-m cProfile -o ${MODEL_NAME}_output.pstats" || commond_optional="-u"
+
 srun -p $1 -n$2\
         --gres gpu:$g \
         --ntasks-per-node $g \
         --job-name=${FRAME_NAME}_${MODEL_NAME} ${SRUN_ARGS}\
-    python -u $pyroot/tools/train.py $pyroot/algolib/configs/$folder_model/$file_model.py --launcher=slurm  \
+    python ${commond_optional} $pyroot/tools/train.py $pyroot/algolib/configs/$folder_model/$file_model.py --launcher=slurm  \
     --work-dir=algolib_gen/${FRAME_NAME}/${MODEL_NAME} --cfg-options dist_params.port=$port $EXTRA_ARGS \
     2>&1 | tee algolib_gen/${FRAME_NAME}/${MODEL_NAME}/train.${MODEL_NAME}.log.$now
