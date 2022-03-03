@@ -68,9 +68,21 @@ model = dict(
         center_size=7,
         rpn=dict(penalty_k=0.05, window_influence=0.42, lr=0.38)))
 
+file_client_args = dict(
+    backend='petrel',
+    path_mapping=dict({
+        './data/ILSVRC/': 'openmmlab:s3://openmmlab/datasets/tracking/ILSVRC/',
+        './data/coco/': 'openmmlab:s3://openmmlab/datasets/detection/coco/',
+        './data/lasot/': 'PAT:s3://PAT/datasets/mmtrack/LaSOT_full/',
+    }))
+imge_root = './data/'
+
+# file_client_args = dict(backend='disk')
+# imge_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/'
+
 data_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/'
 train_pipeline = [
-    dict(type='LoadMultiImagesFromFile', to_float32=True),
+    dict(type='LoadMultiImagesFromFile', to_float32=True, file_client_args=file_client_args),
     dict(type='SeqLoadAnnotations', with_bbox=True),
     dict(
         type='SeqCropLikeSiamFC',
@@ -89,7 +101,7 @@ train_pipeline = [
     dict(type='SeqDefaultFormatBundle', ref_prefix='search')
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile', to_float32=True),
+    dict(type='LoadImageFromFile', to_float32=True, file_client_args=file_client_args),
     dict(type='LoadAnnotations', with_bbox=True),
     dict(
         type='MultiScaleFlipAug',
@@ -112,7 +124,7 @@ data = dict(
                 type='SOTTrainDataset',
                 ann_file=data_root +
                 'ILSVRC/annotations/imagenet_vid_train.json',
-                img_prefix=data_root + 'ILSVRC/Data/VID',
+                img_prefix=imge_root + 'ILSVRC/Data/VID',
                 pipeline=train_pipeline,
                 ref_img_sampler=dict(
                     frame_range=100,
@@ -123,7 +135,7 @@ data = dict(
         dict(
             type='SOTTrainDataset',
             ann_file=data_root + 'coco/annotations/instances_train2017.json',
-            img_prefix=data_root + 'coco/train2017',
+            img_prefix=imge_root + 'coco/train2017',
             pipeline=train_pipeline,
             ref_img_sampler=dict(
                 frame_range=0,
@@ -135,7 +147,7 @@ data = dict(
             type='SOTTrainDataset',
             ann_file=data_root +
             'ILSVRC/annotations/imagenet_det_30plus1cls.json',
-            img_prefix=data_root + 'ILSVRC/Data/DET',
+            img_prefix=imge_root + 'ILSVRC/Data/DET',
             pipeline=train_pipeline,
             ref_img_sampler=dict(
                 frame_range=0,
@@ -148,7 +160,7 @@ data = dict(
         type='LaSOTDataset',
         test_load_ann=True,
         ann_file=data_root + 'lasot/annotations/lasot_test.json',
-        img_prefix=data_root + 'lasot/LaSOTBenchmark',
+        img_prefix=imge_root + 'lasot/LaSOTBenchmark',
         pipeline=test_pipeline,
         ref_img_sampler=None,
         test_mode=True),
@@ -156,7 +168,7 @@ data = dict(
         type='LaSOTDataset',
         test_load_ann=True,
         ann_file=data_root + 'lasot/annotations/lasot_test.json',
-        img_prefix=data_root + 'lasot/LaSOTBenchmark',
+        img_prefix=imge_root + 'lasot/LaSOTBenchmark',
         pipeline=test_pipeline,
         ref_img_sampler=None,
         test_mode=True))

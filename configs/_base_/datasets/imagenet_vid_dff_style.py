@@ -1,10 +1,20 @@
 # dataset settings
+file_client_args = dict(
+    backend='petrel',
+    path_mapping=dict({
+        './data/ILSVRC/': 'openmmlab:s3://openmmlab/datasets/tracking/ILSVRC/',
+    }))
+imge_root = './data/ILSVRC/'
+
+# file_client_args = dict(backend='disk')
+# imge_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/ILSVRC/'
+
 dataset_type = 'ImagenetVIDDataset'
 data_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/ILSVRC/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
-    dict(type='LoadMultiImagesFromFile'),
+    dict(type='LoadMultiImagesFromFile', file_client_args=file_client_args),
     dict(type='SeqLoadAnnotations', with_bbox=True, with_track=True),
     dict(type='SeqResize', img_scale=(1000, 600), keep_ratio=True),
     dict(type='SeqRandomFlip', share_params=True, flip_ratio=0.5),
@@ -17,7 +27,7 @@ train_pipeline = [
     dict(type='SeqDefaultFormatBundle', ref_prefix='ref')
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(
         type='MultiScaleFlipAug',
         img_scale=(1000, 600),
@@ -38,7 +48,7 @@ data = dict(
         dict(
             type=dataset_type,
             ann_file=data_root + 'annotations/imagenet_vid_train.json',
-            img_prefix=data_root + 'Data/VID',
+            img_prefix=imge_root + 'Data/VID',
             ref_img_sampler=dict(
                 num_ref_imgs=1,
                 frame_range=9,
@@ -49,7 +59,7 @@ data = dict(
             type=dataset_type,
             load_as_video=False,
             ann_file=data_root + 'annotations/imagenet_det_30plus1cls.json',
-            img_prefix=data_root + 'Data/DET',
+            img_prefix=imge_root + 'Data/DET',
             ref_img_sampler=dict(
                 num_ref_imgs=1,
                 frame_range=0,
@@ -60,14 +70,14 @@ data = dict(
     val=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations/imagenet_vid_val.json',
-        img_prefix=data_root + 'Data/VID',
+        img_prefix=imge_root + 'Data/VID',
         ref_img_sampler=None,
         pipeline=test_pipeline,
         test_mode=True),
     test=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations/imagenet_vid_val.json',
-        img_prefix=data_root + 'Data/VID',
+        img_prefix=imge_root + 'Data/VID',
         ref_img_sampler=None,
         pipeline=test_pipeline,
         test_mode=True))
