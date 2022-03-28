@@ -76,8 +76,8 @@ export MODEL_NAME=$3
 
 # mmdet_path and mmcls_path
 SHELL_PATH=$(dirname $0)
-export PYTHONPATH=$PYTHONPATH:$SHELL_PATH/../../../mmdet
-export PYTHONPATH=$PYTHONPATH:$SHELL_PATH/../../../mmcls
+export PYTHONPATH=$SHELL_PATH/../../../mmdet:$PYTHONPATH
+export PYTHONPATH=$SHELL_PATH/../../../mmcls:$PYTHONPATH
 
 
 # init_path
