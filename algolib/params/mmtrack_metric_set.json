@@ -1,0 +1,26 @@
+{
+    "selsa_faster_rcnn_r101_dc5_1x_imagenetvid": {
+        "rate": [
+            0.01,
+            0.01
+        ]
+    },
+    "dff_faster_rcnn_r101_dc5_1x_imagenetvid": {
+        "rate": [
+            0.01,
+            0.2
+        ]
+    },
+    "faster-rcnn_r50_fpn_4e_mot17-half": {
+        "rate": [
+            0.01,
+            0.01
+        ]
+    },
+    "siamese_rpn_r50_1x_lasot": {
+        "rate": [
+            0.01,
+            0.05
+        ]
+    } 
+}

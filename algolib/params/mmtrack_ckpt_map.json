@@ -1,0 +1,14 @@
+{
+    "selsa_faster_rcnn_r101_dc5_1x_imagenetvid": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmtrack/checkpoint/selsa_faster_rcnn_r101_dc5_1x_imagenetvid/epoch_7.pth"
+    },
+    "dff_faster_rcnn_r101_dc5_1x_imagenetvid": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmtrack/checkpoint/dff_faster_rcnn_r101_dc5_1x_imagenetvid/epoch_7.pth"
+    },
+    "faster-rcnn_r50_fpn_4e_mot17-half": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmtrack/checkpoint/faster-rcnn_r50_fpn_4e_mot17-half/epoch_4.pth"
+    },
+    "siamese_rpn_r50_1x_lasot": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmtrack/checkpoint/siamese_rpn_r50_1x_lasot/epoch_13.pth"
+    }
+}
