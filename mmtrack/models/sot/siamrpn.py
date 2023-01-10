@@ -178,10 +178,12 @@ class SiamRPN(BaseSingleObjectTracker):
 
     def _bbox_clip(self, bbox, img_h, img_w):
         """Clip the bbox with [cx, cy, w, h] format."""
+        bbox = bbox.cpu()
         bbox[0] = bbox[0].clamp(0., img_w)
         bbox[1] = bbox[1].clamp(0., img_h)
         bbox[2] = bbox[2].clamp(10., img_w)
         bbox[3] = bbox[3].clamp(10., img_h)
+        bbox = bbox.cuda()
         return bbox
 
     def init(self, img, bbox):
@@ -202,7 +204,7 @@ class SiamRPN(BaseSingleObjectTracker):
         """
         z_width = bbox[2] + self.test_cfg.context_amount * (bbox[2] + bbox[3])
         z_height = bbox[3] + self.test_cfg.context_amount * (bbox[2] + bbox[3])
-        z_size = torch.round(torch.sqrt(z_width * z_height))
+        z_size = (torch.round(torch.sqrt((z_width * z_height).cpu()))).cuda()
         avg_channel = torch.mean(img, dim=(0, 2, 3))
         z_crop = self.get_cropped_img(img, bbox[0:2],
                                       self.test_cfg.exemplar_size, z_size,
@@ -230,10 +232,10 @@ class SiamRPN(BaseSingleObjectTracker):
         """
         z_width = bbox[2] + self.test_cfg.context_amount * (bbox[2] + bbox[3])
         z_height = bbox[3] + self.test_cfg.context_amount * (bbox[2] + bbox[3])
-        z_size = torch.sqrt(z_width * z_height)
+        z_size = (torch.sqrt((z_width * z_height).cpu())).cuda()
 
-        x_size = torch.round(
-            z_size * (self.test_cfg.search_size / self.test_cfg.exemplar_size))
+        x_size = (torch.round((
+            z_size * (self.test_cfg.search_size / self.test_cfg.exemplar_size)).cpu())).cuda()
         x_crop = self.get_cropped_img(img, bbox[0:2],
                                       self.test_cfg.search_size, x_size,
                                       avg_channel)

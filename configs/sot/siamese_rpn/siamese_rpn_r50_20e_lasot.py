@@ -20,7 +20,8 @@ model = dict(
         init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'https://download.openmmlab.com/mmtracking/pretrained_weights/sot_resnet50.model'  # noqa: E501
+            '/mnt/lustre/share_data/PAT/datasets/mmtrack/pretrain/sot_resnet50.model'
+            # 'https://download.openmmlab.com/mmtracking/pretrained_weights/sot_resnet50.model'  # noqa: E501
         )),
     neck=dict(
         type='ChannelMapper',
@@ -68,7 +69,8 @@ model = dict(
         center_size=7,
         rpn=dict(penalty_k=0.05, window_influence=0.42, lr=0.38)))
 
-data_root = 'data/'
+# data_root = 'data/'
+data_root = '/mnt/lustre/share_data/PAT/datasets/mmtrack/'
 train_pipeline = [
     dict(
         type='PairSampling',
@@ -142,16 +144,18 @@ data = dict(
         ]),
     val=dict(
         type='LaSOTDataset',
-        ann_file=data_root + 'lasot/annotations/lasot_test_infos.txt',
-        img_prefix=data_root + 'lasot/LaSOTBenchmark',
+        ann_file=data_root + 'LaSOT_full/annotations/lasot_test_infos.txt',
+        # ann_file='/mnt/lustre/wanglei9/lasot/lasot_test_infos.txt',
+        img_prefix=data_root + 'LaSOT_full/LaSOTBenchmark',
         pipeline=test_pipeline,
         split='test',
         test_mode=True,
         only_eval_visible=True),
     test=dict(
         type='LaSOTDataset',
-        ann_file=data_root + 'lasot/annotations/lasot_test_infos.txt',
-        img_prefix=data_root + 'lasot/LaSOTBenchmark',
+        ann_file=data_root + 'LaSOT_full/annotations/lasot_test_infos.txt',
+        # ann_file='/mnt/lustre/wanglei9/lasot/lasot_test_infos.txt',
+        img_prefix=data_root + 'LaSOT_full/LaSOTBenchmark',
         pipeline=test_pipeline,
         split='test',
         test_mode=True,

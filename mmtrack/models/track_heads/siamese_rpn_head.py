@@ -461,7 +461,7 @@ class SiameseRPNHead(BaseModule):
 
         def enlarge_size(w, h):
             pad = (w + h) * 0.5
-            return torch.sqrt((w + pad) * (h + pad))
+            return (torch.sqrt(((w + pad) * (h + pad)).cpu())).cuda()
 
         # scale penalty
         scale_penalty = change_ratio(
@@ -474,8 +474,8 @@ class SiameseRPNHead(BaseModule):
             (bbox_pred[:, 2] / bbox_pred[:, 3]))
 
         # penalize cls_score
-        penalty = torch.exp(-(aspect_ratio_penalty * scale_penalty - 1) *
-                            self.test_cfg.penalty_k)
+        penalty = (torch.exp((-(aspect_ratio_penalty * scale_penalty - 1) *
+                            self.test_cfg.penalty_k).cpu())).cuda()
         penalty_score = penalty * cls_score
 
         # window penalty

@@ -11,7 +11,7 @@ def setup_multi_processes(cfg):
     # set multi-process start method as `fork` to speed up the training
     if platform.system() != 'Windows':
         mp_start_method = cfg.get('mp_start_method', 'fork')
-        mp.set_start_method(mp_start_method)
+        mp.set_start_method(mp_start_method, force = True)
 
     # disable opencv multithreading to avoid system being overloaded
     opencv_num_threads = cfg.get('opencv_num_threads', 0)
